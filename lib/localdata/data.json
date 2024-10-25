@@ -1,0 +1,202 @@
+[
+    {
+        "id": "1",
+        "name": "Amit",
+        "day": "Thursday",
+        "date": "24/10/2024",
+        "img": "assets/images/propic.jpg",
+        "isMissed": false,
+        "called": false,
+        "number": "9123456781"
+    },
+    {
+        "id": "2",
+        "name": "Priya",
+        "day": "Wednesday",
+        "date": "23/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": true,
+        "called": false,
+        "number": "9112345672"
+    },
+    {
+        "id": "3",
+        "name": "Rahul",
+        "day": "Tuesday",
+        "date": "22/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": false,
+        "called": true,
+        "number": "9101234563"
+    },
+    {
+        "id": "4",
+        "name": "Sneha",
+        "day": "Monday",
+        "date": "21/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": true,
+        "called": true,
+        "number": "9198765434"
+    },
+    {
+        "id": "5",
+        "name": "Vikram",
+        "day": "Sunday",
+        "date": "20/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": false,
+        "called": true,
+        "number": "9187654325"
+    },
+    {
+        "id": "6",
+        "name": "Ritu",
+        "day": "Saturday",
+        "date": "19/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": true,
+        "called": false,
+        "number": "9176543216"
+    },
+    {
+        "id": "7",
+        "name": "Arjun",
+        "day": "Friday",
+        "date": "18/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": false,
+        "called": true,
+        "number": "9165432107"
+    },
+    {
+        "id": "8",
+        "name": "Lakshmi",
+        "day": "Thursday",
+        "date": "17/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": true,
+        "called": false,
+        "number": "9154321098"
+    },
+    {
+        "id": "9",
+        "name": "Kiran",
+        "day": "Wednesday",
+        "date": "16/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": false,
+        "called": false,
+        "number": "9143210989"
+    },
+    {
+        "id": "10",
+        "name": "Manoj",
+        "day": "Tuesday",
+        "date": "15/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": true,
+        "called": true,
+        "number": "9132109870"
+    },
+    {
+        "id": "11",
+        "name": "Sunita",
+        "day": "Monday",
+        "date": "14/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": false,
+        "called": true,
+        "number": "9121098761"
+    },
+    {
+        "id": "12",
+        "name": "Rajesh",
+        "day": "Sunday",
+        "date": "13/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": true,
+        "called": false,
+        "number": "9110987652"
+    },
+    {
+        "id": "13",
+        "name": "Anjali",
+        "day": "Saturday",
+        "date": "12/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": false,
+        "called": false,
+        "number": "9109876543"
+    },
+    {
+        "id": "14",
+        "name": "Deepak",
+        "day": "Friday",
+        "date": "11/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": true,
+        "called": true,
+        "number": "9098765434"
+    },
+    {
+        "id": "15",
+        "name": "Neha",
+        "day": "Thursday",
+        "date": "10/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": false,
+        "called": true,
+        "number": "9087654325"
+    },
+    {
+        "id": "16",
+        "name": "Suresh",
+        "day": "Wednesday",
+        "date": "09/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": false,
+        "called": false,
+        "number": "9076543216"
+    },
+    {
+        "id": "17",
+        "name": "Pooja",
+        "day": "Tuesday",
+        "date": "08/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": true,
+        "called": false,
+        "number": "9065432107"
+    },
+    {
+        "id": "18",
+        "name": "Ramesh",
+        "day": "Monday",
+        "date": "07/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": false,
+        "called": true,
+        "number": "9054321098"
+    },
+    {
+        "id": "19",
+        "name": "Meena",
+        "day": "Sunday",
+        "date": "06/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": true,
+        "called": true,
+        "number": "9043210989"
+    },
+    {
+        "id": "20",
+        "name": "Vikas",
+        "day": "Saturday",
+        "date": "05/10/2024",
+        "img": "assets/images/noimage.png",
+        "isMissed": false,
+        "called": false,
+        "number": "9032109870"
+    }
+]
