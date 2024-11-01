@@ -1,19 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mycall/constant/constant.dart';
+import 'package:mycall/features/call/call_ui.dart';
 import 'package:mycall/features/landing/bloc/landing_bloc.dart';
+import 'package:mycall/features/landing/model/landing_data_model.dart';
 import 'package:mycall/mixins/common_mixin.dart';
+import 'package:mycall/utils/shared_preferences.dart';
 import 'package:mycall/widget/round_button.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LandingUi extends StatelessWidget with CommonMixin {
   final _bloc = LandingBloc();
+  UserData _selectedOption = UserData.android;
   LandingUi({super.key}) {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
+        _requestPermission();
         _bloc.add(LandingGetDataEvent());
       },
     );
   }
   final TextEditingController numberTxt = TextEditingController();
+  void _requestPermission() async {
+    final status = await Permission.phone.status;
+    if (!status.isGranted) {
+      await Permission.phone.request();
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +37,7 @@ class LandingUi extends StatelessWidget with CommonMixin {
       child: BlocProvider(
         create: (context) => LandingBloc(),
         child: Scaffold(
-          backgroundColor: const Color.fromARGB(31, 56, 56, 56),
+          backgroundColor: Colors.black87,
           // appBar: AppBar(
           //   title: const Text("My call"),
           // ),
@@ -101,7 +116,7 @@ class LandingUi extends StatelessWidget with CommonMixin {
                   ),
                   filled: true,
                   hintText: "Search",
-                  fillColor: const Color.fromARGB(31, 56, 56, 56),
+                  fillColor: Colors.black87,
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                     borderSide:
@@ -116,33 +131,59 @@ class LandingUi extends StatelessWidget with CommonMixin {
               ),
               BlocBuilder<LandingBloc, LandingState>(
                   bloc: _bloc,
+                  buildWhen: (previous, current) =>
+                      current is LandingGetDataState,
                   builder: (context, state) {
                     print("State is $state ");
                     if (state is LandingGetDataState) {
+                      if (PreferenceUtils.getString(UserData.android.name) ==
+                              "" &&
+                          PreferenceUtils.getString(UserData.custom.name) ==
+                              "") {
+                        WidgetsBinding.instance.addPostFrameCallback(
+                          (_) {
+                            _showCallOptionDialog(context);
+                          },
+                        );
+                      }
+
                       return Expanded(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: state.data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final data = state.data[index];
-                            return Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    // border: Border.all(color: Colors.white),
-                                    ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            height: 55,
-                                            width: 55,
-                                            decoration: BoxDecoration(
+                        child: BlocListener<LandingBloc, LandingState>(
+                          bloc: _bloc,
+                          listener: (context, state) {
+                            if (state is LadingNavigateToCallState) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      CallUi(data: state.data),
+                                ),
+                              );
+                            }
+                          },
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: state.data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final data = state.data[index];
+                              return Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      // border: Border.all(color: Colors.white),
+                                      ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              height: 55,
+                                              width: 55,
+                                              decoration: BoxDecoration(
                                                 border: Border.all(
                                                     color: Colors.white,
                                                     width: 0.50),
@@ -153,68 +194,125 @@ class LandingUi extends StatelessWidget with CommonMixin {
                                                     fit: BoxFit.fitWidth),
                                                 // color: Colors.amber,
                                                 borderRadius:
-                                                    BorderRadius.circular(50),),
-                                          ),
-                                          const SizedBox(
-                                            width: 20,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                data.name.toString(),
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15),
+                                                    BorderRadius.circular(50),
                                               ),
-                                              Text(
-                                                masknumbers(
-                                                    data.number.toString()),
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              const Text(
-                                                "mobile",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 10),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          (data.isMissed == false)
-                                              ? const Icon(
-                                                  Icons.call,
-                                                  color: Colors.white,
-                                                  size: 20,
-                                                )
-                                              : const Icon(
-                                                  Icons.call_missed,
-                                                  color: Colors.red,
-                                                  size: 20,
+                                            ),
+                                            const SizedBox(
+                                              width: 20,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  data.name.toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15),
                                                 ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            data.day.toString(),
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 10),
-                                          )
-                                        ],
-                                      )
-                                    ],
+                                                Text(
+                                                  masknumbers(
+                                                      data.number.toString()),
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                const Text(
+                                                  "mobile",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 10),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            IconButton(
+                                              onPressed: () async {
+                                                final status = await Permission
+                                                    .phone.status;
+                                                if (!status.isGranted) {
+                                                  await Permission.phone
+                                                      .request();
+                                                } else if (status
+                                                    .isPermanentlyDenied) {
+                                                  openAppSettings();
+                                                } else {
+                                                  _bloc.add(
+                                                    LandingNavigateToCallEvent(
+                                                      data: data,
+                                                      number: data.number
+                                                          .toString(),
+                                                    ),
+                                                  );
+                                                }
+                                              },
+                                              icon: Icon(
+                                                (data.isMissed == false)
+                                                    ? Icons.call
+                                                    : Icons
+                                                        .call_missed_outlined,
+                                                size: 20,
+                                                color: (data.isMissed == false)
+                                                    ? Colors.white
+                                                    : Colors.red,
+                                              ),
+                                            ),
+                                            // (data.isMissed == false)
+                                            //     ? IconButton(
+                                            //         onPressed: () {
+                                            //           print("Tap...1");
+                                            //           _bloc.add(
+                                            //               LandingNavigateToCallEvent(
+                                            //                   data: data,
+                                            //                   number:
+                                            //                       data.number ??
+                                            //                           ""));
+                                            //         },
+                                            //         icon: const Icon(
+                                            //           Icons.call,
+                                            //           color: Colors.white,
+                                            //           size: 20,
+                                            //         ),
+                                            //       )
+                                            //     : IconButton(
+                                            //         onPressed: () {
+                                            //           print("Tap...2");
+
+                                            //           _bloc.add(
+                                            //               LandingNavigateToCallEvent(
+                                            //                   data: data,
+                                            //                   number:
+                                            //                       data.number ??
+                                            //                           ""));
+                                            //         },
+                                            //         icon: const Icon(
+                                            //           Icons.call_missed,
+                                            //           color: Colors.red,
+                                            //           size: 20,
+                                            //         ),
+                                            //       ),
+
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              data.day.toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       );
                     } else {
@@ -226,5 +324,103 @@ class LandingUi extends StatelessWidget with CommonMixin {
         ),
       ),
     );
+  }
+
+  void _showCallOptionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return BlocProvider(
+          create: (context) => LandingBloc(),
+          child: BlocBuilder<LandingBloc, LandingState>(
+            builder: (context, state) {
+              UserData selectedOption =
+                  (state is LandingRadioButtonChangedState)
+                      ? state.selectedOption
+                      : _selectedOption;
+
+              return AlertDialog(
+                titlePadding: const EdgeInsets.all(16),
+                contentPadding:
+                    const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                title: const Text(
+                  "Default phone app",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RadioListTile(
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      title: const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Phone", style: TextStyle(fontSize: 14)),
+                          Text("(System default)",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.grey)),
+                        ],
+                      ),
+                      value: UserData.android,
+                      groupValue: selectedOption,
+                      onChanged: (value) {
+                        context.read<LandingBloc>().add(
+                              LandingRadioButtonEvent(
+                                  selectedOption: UserData.android),
+                            );
+                        setUserData(UserData.android.name);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    RadioListTile(
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      title: const Text(
+                        Constant.appName,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      value: UserData.custom,
+                      groupValue: selectedOption,
+                      onChanged: (value) {
+                        context.read<LandingBloc>().add(
+                              LandingRadioButtonEvent(
+                                  selectedOption: UserData.custom),
+                            );
+                        setUserData(UserData.custom.name);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  // // Navigate to custom call screen
+  // void _navigateToCall(BuildContext context, LandingDataModel data) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => CallUi(data: data),
+  //     ),
+  //   );
+  // }
+
+  // // Invoke Android Dialer using platform channel
+  // void _navigateToAndroidDialer(String phoneNumber) {
+  //   _bloc.makePhoneCall(phoneNumber);
+  // }
+
+  setUserData(String val) {
+    PreferenceUtils.setString(UserData.android.key, val);
+    PreferenceUtils.setString(UserData.custom.key, val);
   }
 }

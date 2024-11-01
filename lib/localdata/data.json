@@ -1,33 +1,33 @@
 [
     {
         "id": "1",
-        "name": "Amit",
+        "name": "Faizan",
         "day": "Thursday",
         "date": "24/10/2024",
         "img": "assets/images/propic.jpg",
         "isMissed": false,
         "called": false,
-        "number": "9123456781"
+        "number": "8421121734"
     },
     {
         "id": "2",
-        "name": "Priya",
-        "day": "Wednesday",
-        "date": "23/10/2024",
+        "name": "Hrishikesh Sir",
+        "day": "Monday",
+        "date": "28/10/2024",
         "img": "assets/images/noimage.png",
         "isMissed": true,
         "called": false,
-        "number": "9112345672"
+        "number": "8097588760"
     },
     {
         "id": "3",
-        "name": "Rahul",
-        "day": "Tuesday",
-        "date": "22/10/2024",
+        "name": "office kumar oppo",
+        "day": "Wednesday",
+        "date": "30/10/2024",
         "img": "assets/images/noimage.png",
         "isMissed": false,
         "called": true,
-        "number": "9101234563"
+        "number": "7028370175"
     },
     {
         "id": "4",

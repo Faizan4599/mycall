@@ -3,6 +3,8 @@ part of 'landing_bloc.dart';
 @immutable
 sealed class LandingState {}
 
+sealed class LandingActionState extends LandingState {}
+
 final class LandingInitial extends LandingState {}
 
 final class LandingLoadingState extends LandingState {}
@@ -18,3 +20,14 @@ final class LandingGetDataState extends LandingState {
   List<LandingDataModel> data;
   LandingGetDataState({required this.data});
 }
+
+final class LadingNavigateToCallState extends LandingActionState {
+  LandingDataModel data;
+  LadingNavigateToCallState({required this.data});
+}
+
+final class LandingRadioButtonChangedState extends LandingState {
+  final UserData selectedOption;
+  LandingRadioButtonChangedState({required this.selectedOption});
+}
+

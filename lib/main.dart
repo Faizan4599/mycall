@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mycall/features/landing/ui/landing_ui.dart';
+import 'package:mycall/utils/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await PreferenceUtils.init();
   runApp(const MyApp());
 }
 
